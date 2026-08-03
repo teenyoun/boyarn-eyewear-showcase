@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOYARN — Professional Eyewear Manufacturer</title>
+<style>
+:root{--w:#fff;--bg:#f8f8f6;--card:#fff;--text:#1a1a1a;--muted:#6e6e6e;--gold:#a6803b;--gold-light:rgba(166,128,59,.08);--border:#e8e6e0;--radius:3px}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter','Segoe UI',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:#fff}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .logo{display:flex;align-items:center;text-decoration:none}
+nav .logo img{height:32px;width:auto}
+nav ul{display:flex;gap:36px;list-style:none}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.18em;transition:color .3s}
+nav ul a:hover{color:var(--gold)}
+nav .contact-btn{padding:8px 20px;border:1px solid var(--gold);color:var(--gold);font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:all .3s}
+nav .contact-btn:hover{background:var(--gold);color:#fff}
+
+/* ── HERO ── */
+.hero{min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;padding:100px 24px 60px;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(166,128,59,.04) 0%,transparent 50%,rgba(166,128,59,.03) 100%);z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:720px}
+.hero .tag{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:24px;padding:6px 16px;border:1px solid var(--gold-light);border-radius:20px;background:var(--gold-light)}
+.hero h1{font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:300;letter-spacing:.06em;color:var(--text);line-height:1.15;margin-bottom:16px}
+.hero h1 em{font-style:normal;color:var(--gold);font-weight:400}
+.hero .sub{font-size:1rem;color:var(--muted);max-width:500px;margin:0 auto 40px;line-height:1.8;font-weight:400}
+.hero .hero-cta{display:inline-flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.hero .hero-cta a{padding:14px 36px;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:all .35s}
+.hero .hero-cta .primary{background:var(--gold);color:#fff;border:1px solid var(--gold)}
+.hero .hero-cta .primary:hover{background:#8b6a2d;border-color:#8b6a2d}
+.hero .hero-cta .outline{border:1px solid var(--border);color:var(--text)}
+.hero .hero-cta .outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── sections ── */
+section{padding:100px 48px}
+.section-head{text-align:center;margin-bottom:64px}
+.section-head .eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
+.section-head h2{font-size:2rem;font-weight:300;letter-spacing:.04em;color:var(--text)}
+.section-head .desc{font-size:.85rem;color:var(--muted);max-width:520px;margin:12px auto 0;line-height:1.7}
+
+/* ── CATEGORY GRID (like Jheyewear) ── */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .4s,transform .4s;text-decoration:none;color:inherit;display:block}
+.cat-card:hover{box-shadow:0 8px 30px rgba(0,0,0,.08);transform:translateY(-3px)}
+.cat-card .img-box{aspect-ratio:16/10;overflow:hidden;background:#f4f3ef}
+.cat-card .img-box img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.cat-card:hover .img-box img{transform:scale(1.04)}
+.cat-card .label{padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+.cat-card .label span{font-size:.85rem;font-weight:500;color:var(--text)}
+.cat-card .label .arrow{color:var(--gold);font-size:1.1rem;transition:transform .3s}
+.cat-card:hover .label .arrow{transform:translateX(4px)}
+
+/* ── PRODUCT GRID ── */
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1300px;margin:0 auto}
+.product-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .4s,transform .4s;cursor:pointer;display:flex;flex-direction:column}
+.product-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.07);transform:translateY(-2px)}
+.product-card .img-wrap{aspect-ratio:1;overflow:hidden;background:#fafaf8;position:relative}
+.product-card .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.product-card:hover .img-wrap img{transform:scale(1.05)}
+.product-card .info{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column}
+.product-card .info .cat{font-size:.6rem;font-weight:600;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.product-card .info h3{font-size:.82rem;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:12px;flex:1}
+.product-card .info .bottom{display:flex;align-items:center;justify-content:space-between}
+.product-card .info .price{font-size:.95rem;font-weight:600;color:var(--text)}
+.product-card .info .moq{font-size:.62rem;color:var(--muted)}
+
+/* ── WHY US ── */
+#why-us{background:var(--card)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1100px;margin:0 auto}
+.why-item{text-align:center;padding:40px 28px;border:1px solid var(--border);border-radius:var(--radius);transition:border-color .3s}
+.why-item:hover{border-color:var(--gold)}
+.why-item .icon{width:52px;height:52px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--gold-light);color:var(--gold);font-size:1.3rem}
+.why-item h4{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:8px}
+.why-item p{font-size:.78rem;color:var(--muted);line-height:1.6}
+
+/* ── ABOUT ── */
+.about-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.about-text h2{font-size:1.8rem;font-weight:300;color:var(--text);margin-bottom:20px;line-height:1.3}
+.about-text p{font-size:.85rem;color:var(--muted);line-height:1.9;margin-bottom:14px}
+.about-stats{display:flex;gap:40px;margin-top:32px;flex-wrap:wrap}
+.about-stats .s{text-align:center}
+.about-stats .s .n{font-size:1.8rem;font-weight:300;color:var(--gold)}
+.about-stats .s .l{font-size:.65rem;font-weight:600;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.about-img{aspect-ratio:4/5;background:linear-gradient(135deg,rgba(166,128,59,.08),rgba(166,128,59,.02));display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:var(--radius)}
+.about-img img{max-width:70%;height:auto;opacity:.9}
+
+/* ── CONTACT ── */
+#contact{background:var(--card);border-top:1px solid var(--border)}
+.contact-inner{max-width:600px;margin:0 auto;text-align:center}
+.contact-inner p{color:var(--muted);font-size:.85rem;line-height:1.8;margin-bottom:28px}
+.contact-inner .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contact-inner .btns a{padding:14px 36px;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:all .35s}
+.contact-inner .btns .primary{background:var(--gold);color:#fff;border:1px solid var(--gold)}
+.contact-inner .btns .primary:hover{background:#8b6a2d}
+.contact-inner .btns .secondary{border:1px solid var(--border);color:var(--text)}
+.contact-inner .btns .secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:48px;text-align:center;background:#fff}
+footer .flogo img{height:28px;width:auto;display:block;margin:0 auto 8px}
+footer .copy{font-size:.65rem;color:var(--muted);letter-spacing:.1em}
+
+/* ── fade ── */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.fade-in.on{opacity:1;transform:translateY(0)}
+
+/* ── responsive ── */
+@media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.cat-grid,.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  nav{padding:0 20px}
+  nav ul{gap:18px}
+  nav ul a{font-size:.65rem}
+  nav .contact-btn{display:none}
+  section{padding:64px 20px}
+  .section-head h2{font-size:1.6rem}
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .cat-grid,.why-grid{grid-template-columns:1fr;gap:16px}
+  .about-wrap{grid-template-columns:1fr;gap:40px}
+  .about-img{order:-1;aspect-ratio:3/2}
+  .hero h1{font-size:2rem}
+}
+@media(max-width:480px){.products-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo"><img src="boyarn-logo.png" alt="Boyarn"></a>
+  <ul>
+    <li><a href="#products">Products</a></li>
+    <li><a href="products.html">Full Catalog</a></li>
+    <li><a href="#why-us">Why Us</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="contact-btn">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="tag">Professional Eyewear Manufacturer</div>
+    <h1>Crafting <em>Eyewear</em><br>That Defines Style</h1>
+    <p class="sub">10+ years of precision manufacturing. UV400 protection, premium materials, OEM &amp; ODM — your trusted sunglasses partner from Yiwu, China.</p>
+    <div class="hero-cta">
+      <a href="#products" class="primary">View Collection</a>
+      <a href="#about" class="outline">About BOYARN</a>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES (Jheyewear-inspired) -->
+<section>
+  <div class="section-head">
+    <div class="eyebrow">Products Categories</div>
+    <h2>Professional Eyewear Manufacturer</h2>
+    <p class="desc">From classic to trend-forward — explore our full range of eyewear solutions designed for global markets.</p>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card" href="https://boyarn.en.alibaba.com/productgrouplist-803279177/Sunglasses.html" target="_blank">
+      <div class="img-box"><img src="https://s.alicdn.com/@sc04/kf/Hc7fb4c3752474dc4b79e3110c8459a5cy/Boyarn-Hot-Selling-Vintage-UV400-Small-Round.jpg_480x480.jpg" alt="Sunglasses" loading="lazy"></div>
+      <div class="label"><span>Sunglasses</span><span class="arrow">&rarr;</span></div>
+    </a>
+    <a class="cat-card" href="https://boyarn.en.alibaba.com/productgrouplist-803279177/Polarized_Sunglasses.html" target="_blank">
+      <div class="img-box"><img src="https://s.alicdn.com/@sc04/kf/H6bd71a428f54493d8703e05063b0646b4/Boyarn-1025-Trendy-Retro-TAC-Polarized-Lens.jpg_480x480.jpg" alt="Polarized" loading="lazy"></div>
+      <div class="label"><span>Polarized Sunglasses</span><span class="arrow">&rarr;</span></div>
+    </a>
+    <a class="cat-card" href="https://boyarn.en.alibaba.com/productgrouplist-803279177/Sports_Spectacles.html" target="_blank">
+      <div class="img-box"><img src="https://s.alicdn.com/@sc04/kf/H9b9920755b0841b095c62466fd0e0909x/Boyarn-2027-Custom-Logo-Trendy-Metal-Frames.jpg_480x480.jpg" alt="Sports" loading="lazy"></div>
+      <div class="label"><span>Sports Spectacles</span><span class="arrow">&rarr;</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- MAIN PRODUCTS -->
+<section id="products" style="background:#fff">
+  <div class="section-head">
+    <div class="eyebrow">Main Products</div>
+    <h2>Professional Eyewear Manufacturer</h2>
+    <p class="desc">Curated selection from our full catalog — custom logo, OEM/ODM available. <a href="products.html" style="color:var(--gold);font-weight:500;">Browse all 545+ products &rarr;</a></p>
+  </div>
+  <div class="products-grid" id="productGrid"></div>
+</section>
+
+<!-- WHY US -->
+<section id="why-us">
+  <div class="section-head">
+    <div class="eyebrow">Why Choose Us</div>
+    <h2>Professional Eyewear Manufacturer</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-item fade-in">
+      <div class="icon">🏭</div>
+      <h4>Factory Direct Supply</h4>
+      <p>Competitive pricing without third-party markup — you work directly with the manufacturer.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="icon">🎨</div>
+      <h4>Customize Service</h4>
+      <p>Design your own logo, color, pattern, and packaging — full OEM &amp; ODM support.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="icon">⏳</div>
+      <h4>10+ Years Experience</h4>
+      <p>Deep export expertise across North America, Europe, and Southeast Asia markets.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="icon">✅</div>
+      <h4>Quality Assurance</h4>
+      <p>Strict quality inspection at every production stage — UV400 certified, durable materials.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="icon">🚀</div>
+      <h4>Fast Response</h4>
+      <p>Average response time under 5 hours, 94.6% response rate — we value your time.</p>
+    </div>
+    <div class="why-item fade-in">
+      <div class="icon">🌍</div>
+      <h4>Global Shipping</h4>
+      <p>Trade Assurance protected orders. Reliable logistics to over 50 countries worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-text fade-in">
+      <h2>A decade of optical precision, from Yiwu to the world.</h2>
+      <p>Yiwu Boyarn Glasses Factory has been dedicated to eyewear craftsmanship for over ten years. We specialize in the design, development, and production of sunglasses, reading glasses, and optical frames — with a complete and scientific quality control system.</p>
+      <p>Our frames are crafted from premium acetate, lightweight metal alloys, and high-grade polycarbonate. Every pair undergoes rigorous inspection before it leaves our facility.</p>
+      <div class="about-stats">
+        <div class="s"><div class="n">10+</div><div class="l">Years</div></div>
+        <div class="s"><div class="n">165+</div><div class="l">Transactions</div></div>
+        <div class="s"><div class="n">94.6%</div><div class="l">Reply Rate</div></div>
+        <div class="s"><div class="n">&lt;5h</div><div class="l">Response</div></div>
+      </div>
+    </div>
+    <div class="about-img fade-in">
+      <img src="boyarn-logo.png" alt="Boyarn">
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-head">
+    <div class="eyebrow">Contact</div>
+    <h2>Let's Work Together</h2>
+    <p class="desc">Whether you need a custom logo, OEM production, or wholesale pricing — we're ready to help.</p>
+  </div>
+  <div class="contact-inner">
+    <div class="btns">
+      <a href="https://boyarn.en.alibaba.com/contactinfo.html" target="_blank" class="primary">Contact Supplier</a>
+      <a href="https://boyarn.en.alibaba.com/" target="_blank" class="secondary">Visit Full Store</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo"><img src="boyarn-logo.png" alt="Boyarn"></div>
+  <div class="copy">&copy; 2026 Yiwu Boyarn Glasses Factory. All rights reserved.</div>
+</footer>
+
+<script>
+const products=[
+  {name:"Excellent Sports UV400 Protective Shades",cat:"Sports",price:"US$1.94-2.66",img:"https://s.alicdn.com/@sc04/kf/H3597f3ac484d40fdb56b9f04925c34caI/2023-uv400-Gafas-De-Sol-PC-.jpg_480x480.jpg?hasNWGrade=1"},
+  {name:"High Quality Sunglasses Modern UV400",cat:"Classic",price:"US$1.21-1.46",img:"https://s.alicdn.com/@sc04/kf/He8a95a632ea1435c848b14464ca1e514X/2025-UV400-.png"},
+  {name:"Classic Designer Sunglasses Custom Brand",cat:"Designer",price:"US$1.30-1.60",img:"https://s.alicdn.com/@sc04/kf/He7752fbd5686461cbf1f21b608f8f1fce/2025-UV400-.jpg"},
+  {name:"New Styles Fashion Sun Glasses Oversized",cat:"Oversized",price:"US$1.92-2.15",img:"https://s.alicdn.com/@sc04/kf/H3d8484200aa944559f503b5d1a653fc3M/2025-.jpg"},
+  {name:"China New Product Sunglasses Wholesale",cat:"Wholesale",price:"US$1.67-1.92",img:"https://s.alicdn.com/@sc04/kf/Ha215e9dab8da4e5a943b0f04cce85314m/2025-.jpg_480x480.jpg"},
+  {name:"Polarized Sunglasses UV400 Vintage Square",cat:"Polarized · Vintage",price:"US$1.71-2.33",img:"https://s.alicdn.com/@sc04/kf/H09e65963a2cf4b6090175f18930a568fJ/2026-UV400-PC-.jpg_480x480.jpg"},
+  {name:"Trend Fashion Polarized Sunglasses Custom",cat:"Polarized · Trend",price:"US$2.04-2.24",img:"https://s.alicdn.com/@sc04/kf/H3a0a30b4d56845d5b1a91799c12a18d6y/2026-UV400-.jpg_480x480.jpg"},
+  {name:"Custom Logo Ladies Sun Glasses",cat:"Ladies",price:"US$0.28-0.39",img:"https://s.alicdn.com/@sc04/kf/H1a6ee236b1cb4887adad43145b65701bP/2026-.jpg"},
+  {name:"Trends Vintage Oval Polarized Sunglasses",cat:"Polarized · Oval",price:"US$1.95-2.64",img:"https://s.alicdn.com/@sc04/kf/Hab7eeb66b9d341c89368b226f6a380ea5/2026-.png_480x480.jpg"},
+  {name:"Trending Fashion Polarized Sun Glasses",cat:"Polarized · Fashion",price:"US$1.97-2.61",img:"https://s.alicdn.com/@sc04/kf/Hc10e1ef3d6dd4d34844e0c43b53a6a3fz/2026-.png_480x480.jpg"},
+  {name:"Wholesale Polarized Square Sunglasses UV400",cat:"Polarized · Square",price:"US$1.99-2.52",img:"https://s.alicdn.com/@sc04/kf/Hd0e4a1cc3b704ffbac2cb6fbc40aa555l/2026-UV400-.jpg"},
+  {name:"UV400 Plastic Frame Sun Glasses",cat:"Plastic · Classic",price:"US$0.82-1.20",img:"https://s.alicdn.com/@sc04/kf/H8cc5fc1d3207440e92757d002b2ceddcL/UV400-uv400-2024.jpg_480x480.jpg"},
+  {name:"Manufacturer Wholesale Custom Sun Glasses",cat:"Wholesale · Custom",price:"US$1.33-1.57",img:"https://s.alicdn.com/@sc04/kf/Haeac2de81b6e4f54bbbb305b4b416b8aW/-2024.jpg_480x480.jpg"},
+  {name:"Cheap Price Sports Sun Glasses Fashion",cat:"Sports · Value",price:"US$1.46-1.65",img:"https://s.alicdn.com/@sc04/kf/Hfd5d0ef1309f4efa91068a4adf71ba429/-2024.jpg"}
+];
+
+document.getElementById('productGrid').innerHTML=products.map((p,i)=>`
+  <div class="product-card fade-in" style="transition-delay:${i*50}ms">
+    <div class="img-wrap">
+      <img src="${p.img}" alt="${p.name}" loading="lazy">
+    </div>
+    <div class="info">
+      <div class="cat">${p.cat}</div>
+      <h3>${p.name}</h3>
+      <div class="bottom">
+        <span class="price">${p.price}</span>
+        <span class="moq">MOQ 2</span>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
