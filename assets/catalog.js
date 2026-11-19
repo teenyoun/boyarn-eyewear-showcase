@@ -66,3 +66,64 @@
     im.src = b.querySelector("img").getAttribute("src").replace("/assets/t/", "/assets/p/");
   });
 })();
+
+/* ---- swatch lightbox ---- */
+(function () {
+  var btns = document.querySelectorAll(".sw-btn");
+  if (!btns.length) return;
+
+  var box = document.createElement("div");
+  box.className = "lightbox";
+  box.setAttribute("data-open", "false");
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
+  box.innerHTML =
+    '<button type="button" class="lb-close" aria-label="Close">&times;</button>' +
+    '<button type="button" class="lb-nav lb-prev" aria-label="Previous">&#8249;</button>' +
+    '<img alt="">' +
+    '<p class="lb-name"></p>' +
+    '<button type="button" class="lb-nav lb-next" aria-label="Next">&#8250;</button>';
+  document.body.appendChild(box);
+
+  var img = box.querySelector("img");
+  var cap = box.querySelector(".lb-name");
+  var list = Array.prototype.slice.call(btns);
+  var cur = 0;
+
+  function show(i) {
+    cur = (i + list.length) % list.length;
+    var b = list[cur];
+    img.src = b.getAttribute("data-large");
+    img.alt = b.getAttribute("data-name") || "";
+    cap.textContent = b.getAttribute("data-name") || "";
+  }
+
+  function open(i) {
+    show(i);
+    box.setAttribute("data-open", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function close() {
+    box.setAttribute("data-open", "false");
+    document.body.style.overflow = "";
+    img.removeAttribute("src");
+  }
+
+  list.forEach(function (b, i) {
+    b.addEventListener("click", function () { open(i); });
+  });
+
+  box.querySelector(".lb-close").addEventListener("click", close);
+  box.querySelector(".lb-prev").addEventListener("click", function (e) { e.stopPropagation(); show(cur - 1); });
+  box.querySelector(".lb-next").addEventListener("click", function (e) { e.stopPropagation(); show(cur + 1); });
+  box.addEventListener("click", function (e) {
+    if (e.target === box) close();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (box.getAttribute("data-open") !== "true") return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") show(cur - 1);
+    if (e.key === "ArrowRight") show(cur + 1);
+  });
+})();
