@@ -6,7 +6,7 @@
 
   /* ---- 只改这两行：WhatsApp 号码要带国家码、纯数字，不要 + 和空格 ---- */
   var WHATSAPP = "8618069919823";   // +86 18069919823
-  var EMAIL    = "";                // 留空 = 全站隐藏邮件入口
+  var EMAIL    = "Josie@boyarn.com";  // 留空 = 全站隐藏邮件入口
 
   var ALL = "All";
   var PAGE = 48;
