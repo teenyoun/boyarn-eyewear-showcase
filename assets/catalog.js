@@ -67,10 +67,12 @@
   });
 })();
 
-/* ---- swatch lightbox ---- */
+/* ---- lightbox: swatches and the main gallery both open full size ---- */
 (function () {
-  var btns = document.querySelectorAll(".sw-btn");
-  if (!btns.length) return;
+  var swBtns = [].slice.call(document.querySelectorAll(".sw-btn"));
+  var gal = document.getElementById("galImg");
+  var hasGallery = gal && gal.getAttribute("data-gallery");
+  if (!swBtns.length && !hasGallery) return;
 
   var box = document.createElement("div");
   box.className = "lightbox";
@@ -87,18 +89,19 @@
 
   var img = box.querySelector("img");
   var cap = box.querySelector(".lb-name");
-  var list = Array.prototype.slice.call(btns);
   var cur = 0;
+  var list = [];
 
   function show(i) {
+    if (!list.length) return;
     cur = (i + list.length) % list.length;
-    var b = list[cur];
-    img.src = b.getAttribute("data-large");
-    img.alt = b.getAttribute("data-name") || "";
-    cap.textContent = b.getAttribute("data-name") || "";
+    img.src = list[cur].src;
+    img.alt = list[cur].name || "";
+    cap.textContent = list[cur].name || "";
   }
 
-  function open(i) {
+  function open(items, i) {
+    list = items;
     show(i);
     box.setAttribute("data-open", "true");
     document.body.style.overflow = "hidden";
@@ -110,9 +113,26 @@
     img.removeAttribute("src");
   }
 
-  list.forEach(function (b, i) {
-    b.addEventListener("click", function () { open(i); });
-  });
+  if (swBtns.length) {
+    var swatches = swBtns.map(function (b) {
+      return { src: b.getAttribute("data-large"), name: b.getAttribute("data-name") || "" };
+    });
+    swBtns.forEach(function (b, i) {
+      b.addEventListener("click", function () { open(swatches, i); });
+    });
+  }
+
+  if (hasGallery) {
+    var urls = [];
+    try { urls = JSON.parse(gal.getAttribute("data-gallery")) || []; } catch (e) { urls = []; }
+    if (urls.length) {
+      var shots = urls.map(function (u, n) { return { src: u, name: "Photo " + (n + 1) }; });
+      gal.addEventListener("click", function () {
+        var at = urls.indexOf(gal.getAttribute("src"));
+        open(shots, at < 0 ? 0 : at);
+      });
+    }
+  }
 
   box.querySelector(".lb-close").addEventListener("click", close);
   box.querySelector(".lb-prev").addEventListener("click", function (e) { e.stopPropagation(); show(cur - 1); });
