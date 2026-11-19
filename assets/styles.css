@@ -304,3 +304,7 @@ p{margin:0;}
 }
 .more-wrap{display:flex;justify-content:center;margin-top:36px;}
 .more-wrap .btn{padding:13px 34px;}
+
+.modal-alt{font-size:12.5px;color:var(--muted);text-align:center;margin:0;}
+.modal-alt a{border-bottom:1px solid var(--line);padding-bottom:1px;}
+.modal-alt a:hover{border-bottom-color:var(--accent);color:var(--accent);}

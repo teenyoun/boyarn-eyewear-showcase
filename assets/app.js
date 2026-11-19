@@ -4,6 +4,10 @@
 (function () {
   "use strict";
 
+  /* ---- 只改这两行：WhatsApp 号码要带国家码、纯数字，不要 + 和空格 ---- */
+  var WHATSAPP = "8618069919823";   // +86 18069919823
+  var EMAIL    = "";                // 留空 = 全站隐藏邮件入口
+
   var ALL = "All";
   var PAGE = 48;
   var products = (window.BOYARN_PRODUCTS || []).filter(function (p) { return p && p.name; });
@@ -53,6 +57,23 @@
     });
   }
   function money(n) { return "$" + Number(n).toFixed(2); }
+  function waLink(text) {
+    return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
+  }
+  function mailLink(subject, body) {
+    return "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(body);
+  }
+  function hasEmail() { return !!EMAIL && EMAIL.indexOf("REPLACE") !== 0; }
+  function enquiryText(p) {
+    return "Hello BOYARN, I would like a quote.\n" +
+      "Style code: " + p.id + "\n" +
+      "Item: " + p.name + "\n" +
+      "Quantity per colour: \n" +
+      "Destination market: \n" +
+      "Lens required: \n" +
+      "Logo on temple: yes / no";
+  }
 
   function priceLabel(p) {
     if (p.fobLow == null) return "Ask<em>FOB</em>";
@@ -137,10 +158,14 @@
       row("Shape", p.shape) +
       row("Material", p.material) +
       row("FOB", p.fobLow == null ? "On request" : (p.fobLow === p.fobHigh ? money(p.fobLow) : money(p.fobLow) + " – " + money(p.fobHigh)));
-    document.getElementById("modalQuote").href =
-      "mailto:REPLACE@example.com?subject=" + encodeURIComponent("Quote request — " + p.id) +
-      "&body=" + encodeURIComponent("Style code: " + p.id + "\nItem: " + p.name +
-        "\nQuantity per colour: \nDestination market: \nLens required: \nLogo: yes / no\n");
+    document.getElementById("modalQuote").href = waLink(enquiryText(p));
+    var mailA = document.getElementById("modalMail");
+    var mailP = mailA ? mailA.parentNode : null;
+    if (hasEmail()) {
+      mailA.href = mailLink("Quote request — " + p.id, enquiryText(p));
+    } else if (mailP) {
+      mailP.style.display = "none";
+    }
     modal.hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -199,6 +224,19 @@
       navToggle.setAttribute("aria-expanded", "false");
     }
   });
+
+  /* ---------- wire the contact block from the two constants ---------- */
+  var waBtn = document.querySelector('.contact-actions a[href*="wa.me"]');
+  if (waBtn) waBtn.href = waLink("Hello BOYARN, I found you through your catalogue and would like to talk.");
+  var mailBtn = document.querySelector('.contact-actions a[href^="mailto"]');
+  if (mailBtn) {
+    if (hasEmail()) {
+      mailBtn.href = mailLink("Catalogue enquiry",
+        "Hello BOYARN,\n\nI am interested in the following:\nStyle code: \nQuantity: \nDestination market: \nLens required: \n");
+    } else {
+      mailBtn.style.display = "none";
+    }
+  }
 
   buildChips();
   render();
