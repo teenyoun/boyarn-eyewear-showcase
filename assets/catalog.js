@@ -147,3 +147,17 @@
     if (e.key === "ArrowRight") show(cur + 1);
   });
 })();
+
+/* ---- hero rotation ---- */
+(function () {
+  var art = document.querySelector(".hero-art");
+  if (!art) return;
+  var slides = art.querySelectorAll(".hero-slide");
+  if (slides.length < 2) return;
+  var i = 0;
+  setInterval(function () {
+    slides[i].classList.remove("on");
+    i = (i + 1) % slides.length;
+    slides[i].classList.add("on");
+  }, 5000);
+})();

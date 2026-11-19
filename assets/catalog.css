@@ -68,8 +68,8 @@ ul{margin:0;padding:0;list-style:none;}
 .hero-facts .hf{display:block;font-family:"Cormorant Garamond",serif;font-size:21px;line-height:1.05;color:var(--accent);margin-bottom:5px;}
 .hero-facts.cap div{min-width:170px;}
 .hero-facts small{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);}
-.hero-art{position:relative;aspect-ratio:4/3;background:var(--sand);border:1px solid var(--line);overflow:hidden;}
-.hero-art img{width:100%;height:100%;object-fit:contain;padding:14px;background:#fff;}
+.hero-art{position:relative;aspect-ratio:4/3;background:#fff;overflow:hidden;}
+.hero-art img{width:100%;height:100%;object-fit:cover;background:#fff;}
 .hero-note{position:absolute;left:0;bottom:0;right:0;background:rgba(26,23,20,.82);color:#F6F2EA;padding:11px 15px;font-size:11.5px;letter-spacing:.06em;}
 
 /* ---------------- category tiles ---------------- */
@@ -201,7 +201,7 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
   .cat-grid{grid-template-columns:repeat(3,1fr);}
   .pdp{grid-template-columns:1fr;gap:34px;}
   .hero-inner{grid-template-columns:1fr;gap:34px;padding:48px var(--pad) 42px;}
-  .hero-art{order:-1;aspect-ratio:16/10;}
+  .hero-art{order:-1;aspect-ratio:4/3;}
   .related .grid{grid-template-columns:repeat(3,1fr);}
 }
 @media (max-width:760px){
@@ -277,3 +277,14 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
 @media (max-width:760px){
   .power-list .pw{min-width:48px;padding:6px 8px;font-size:12px;}
 }
+
+/* price line */
+.price{margin-top:15px;}
+.price span{display:block;font-family:"Cormorant Garamond",serif;font-size:27px;line-height:1.1;color:var(--accent);}
+.price small{display:block;margin-top:4px;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);}
+@media (max-width:760px){ .price span{font-size:23px;} }
+
+/* hero rotation: images stack and cross-fade */
+.hero-art .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease;}
+.hero-art .hero-slide.on{opacity:1;}
+.hero-art .hero-note{z-index:2;}
