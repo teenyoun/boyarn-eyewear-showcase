@@ -328,3 +328,11 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
   .lp-body h2{margin-top:32px;padding-top:20px;}
   .lp-body p{font-size:15px;}
 }
+
+/* jump link to the buying-guide block that sits below the grid */
+.lp-jump{margin:0;padding:14px 0 0;}
+.lp-jump a{
+  font-size:12.5px;letter-spacing:.02em;color:var(--muted);
+  border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .15s,border-color .15s;
+}
+.lp-jump a:hover{color:var(--accent-ink);border-color:var(--accent);}
