@@ -18,22 +18,40 @@
   var strip = document.querySelector("[data-thumbs]");
   if (!main || !strip) return;
 
-  var thumbs = [].slice.call(strip.querySelectorAll("button"));
-  if (!thumbs.length) return;
+  var buttons = [].slice.call(strip.querySelectorAll("button"));
+  if (!buttons.length) return;
 
-  var count = thumbs.length;
+  var vid = document.getElementById("galVid");
+  var order = buttons;
+  var count = order.length;
   var index = 0;
 
-  function show(i) {
-    index = (i + count) % count;
-    var src = thumbs[index].querySelector("img").getAttribute("src");
-    main.setAttribute("src", src.replace("/assets/t/", "/assets/p/"));
-    thumbs.forEach(function (b, n) {
-      b.setAttribute("aria-current", n === index ? "true" : "false");
+  function apply() {
+    var b = order[index];
+    var isVideo = b.hasAttribute("data-video");
+    if (vid) {
+      if (isVideo) {
+        main.setAttribute("hidden", "");
+        vid.removeAttribute("hidden");
+        try { vid.currentTime = 0; vid.play().catch(function () {}); } catch (e) {}
+      } else {
+        try { vid.pause(); } catch (e) {}
+        vid.setAttribute("hidden", "");
+        main.removeAttribute("hidden");
+      }
+    }
+    if (!isVideo) {
+      var src = b.querySelector("img").getAttribute("src").replace("/assets/t/", "/assets/p/");
+      main.setAttribute("src", src);
+    }
+    order.forEach(function (x, n) {
+      x.setAttribute("aria-current", n === index ? "true" : "false");
     });
   }
 
-  thumbs.forEach(function (b, n) {
+  function show(i) { index = (i + count) % count; apply(); }
+
+  buttons.forEach(function (b, n) {
     b.addEventListener("click", function () { show(n); });
   });
 
@@ -49,16 +67,17 @@
   });
 
   /* swipe on touch devices */
+  var stage = document.getElementById("galVid") ? document.querySelector(".gal-main") : main;
   var startX = null;
-  main.addEventListener("touchstart", function (e) {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-  main.addEventListener("touchend", function (e) {
+  stage.addEventListener("touchstart", function (e) { startX = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener("touchend", function (e) {
     if (startX === null) return;
     var dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 44) show(index + (dx < 0 ? 1 : -1));
     startX = null;
   }, { passive: true });
+
+  apply();
 
   /* preload the rest so the next swipe is instant */
   thumbs.slice(1).forEach(function (b) {
