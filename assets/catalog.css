@@ -439,3 +439,9 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
 .rev-note{font-size:13px;color:#777;margin:0}
 .rev-note.ok{color:#137333}
 .rev-note.err{color:#a50e0e}
+
+/* ---------- 页脚法律链接 ---------- */
+.foot-pol-row{border-top:1px solid rgba(255,255,255,.14);margin-top:6px;padding-top:14px}
+.foot-pol{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;line-height:1.6}
+.foot-pol a{color:inherit;opacity:.72;text-decoration:none;transition:opacity .15s}
+.foot-pol a:hover{opacity:1;text-decoration:underline}
