@@ -39,6 +39,55 @@
     });
   }
 
+
+  /* ---------------- 样品费 ---------------- */
+  var sb = document.querySelector("[data-sample]");
+  if (sb) {
+    fetch(API + "/api/config")
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        if (!cfg.payments) return;
+        var fee = (cfg.sampleFee / 100).toFixed(2);
+        sb.querySelector(".sb-fee").textContent = "$" + fee;
+        sb.hidden = false;
+        var btn = sb.querySelector(".sb-btn");
+        btn.addEventListener("click", function () {
+          var qty = sb.querySelector(".sb-qty").value;
+          btn.disabled = true;
+          btn.textContent = "Opening Stripe...";
+          fetch(API + "/api/sample-checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ref: sb.getAttribute("data-sample"), qty: parseInt(qty, 10) })
+          })
+            .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+            .then(function (res) {
+              if (res.ok && res.d.url) { location.href = res.d.url; return; }
+              btn.disabled = false;
+              btn.textContent = "Pay $" + fee + " by card";
+              alert(res.d.error === "payments not configured"
+                ? "Card payment is not switched on yet. Please message us on WhatsApp."
+                : "Payment could not start: " + (res.d.error || "unknown error"));
+            })
+            .catch(function () {
+              btn.disabled = false;
+              btn.textContent = "Pay $" + fee + " by card";
+              alert("Network error, please retry.");
+            });
+        });
+      })
+      .catch(function () {});
+  }
+
+  /* 支付成功返回 */
+  if (location.search.indexOf("paid=1") > -1) {
+    var banner = document.createElement("div");
+    banner.className = "pay-ok";
+    banner.textContent = "Payment received. We will email sample dispatch details shortly.";
+    var anchor = document.querySelector(".pdp-actions");
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(banner, anchor);
+  }
+
   /* ---------------- 评价 ---------------- */
   var box = root.querySelector(".rev-list");
   var sum = root.querySelector(".rev-sum");
