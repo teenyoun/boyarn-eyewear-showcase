@@ -214,12 +214,9 @@
             added += it.qty;
           });
           if (added) {
+            var label = addBtn.textContent;
             addBtn.textContent = "Added " + added + " \u2713";
-            setTimeout(function () {
-              panel.querySelectorAll(".q-i").forEach(function (x) { x.value = 0; });
-              recalc();
-              addBtn.textContent = "Add to sample cart";
-            }, 1200);
+            setTimeout(function () { addBtn.textContent = label || "Add to cart"; }, 1400);
           }
         });
 
