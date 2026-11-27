@@ -561,8 +561,9 @@ a,button,summary,.thumb,.sku-row,.sku-gocart,.sku-add,.sku-buy{touch-action:mani
   body.has-sku-bar{padding-bottom:96px}
   .sku-bar{flex-direction:column;align-items:stretch;gap:6px;
     padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
-  .sku-sub-wrap{display:flex;justify-content:space-between;align-items:baseline;
-    width:100%;font-size:12.5px;line-height:1.3}
+  .sku-sub-wrap{display:flex;justify-content:flex-start;align-items:baseline;
+    gap:5px;width:100%;font-size:12.5px;line-height:1.3}
+  .sku-qty-n{margin-left:auto}
   .sku-sub-wrap b{font-size:16px;margin-left:4px}
   .sku-qty-n{font-size:12.5px}
   .sku-btns{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
