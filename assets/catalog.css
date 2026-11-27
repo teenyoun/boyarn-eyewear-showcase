@@ -457,3 +457,26 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
 .sb-note{flex:1 1 100%;margin:2px 0 0;font-size:12.5px;color:#777}
 .pay-ok{margin:14px 0;padding:11px 14px;border-radius:10px;background:#e8f5e9;color:#1b5e20;
   font-size:14px;border:1px solid #c8e6c9}
+
+/* ---------- 样品车 ---------- */
+.cart-pill{position:fixed;left:20px;bottom:20px;z-index:60;display:inline-flex;align-items:center;gap:8px;
+  background:#111;color:#fff;text-decoration:none;border-radius:999px;padding:11px 18px;font-size:14px;
+  box-shadow:0 6px 20px rgba(0,0,0,.22)}
+.cart-pill b{background:#fff;color:#111;border-radius:999px;padding:1px 8px;font-size:13px}
+.cart-table{width:100%;border-collapse:collapse;margin:18px 0 10px;font-size:14.5px}
+.cart-table th,.cart-table td{border-bottom:1px solid #ececf0;padding:11px 8px;text-align:left}
+.cart-table th{font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:#777;font-weight:600}
+.cart-table a{color:#111}
+.c-qty{border:1px solid #d8d8dc;border-radius:7px;padding:5px 7px;background:#fff;font-size:14px}
+.c-del{border:1px solid #e2e2e6;background:#fff;border-radius:7px;padding:5px 10px;font-size:13px;cursor:pointer;color:#a50e0e}
+.cart-sum{margin:18px 0 0;max-width:340px}
+.cart-sum p{margin:6px 0;font-size:14.5px;color:#444;display:flex;justify-content:space-between}
+.cart-sum p b{color:#111}
+.cart-total{border-top:1px solid #e6e6ea;padding-top:10px;margin-top:10px!important;font-size:16px!important}
+.cart-pay{margin-top:14px;width:100%;border:0;border-radius:10px;background:#111;color:#fff;
+  padding:13px 18px;font-size:15px;cursor:pointer}
+.cart-pay:hover{background:#000}
+.cart-pay:disabled{opacity:.55;cursor:default}
+.cart-note{font-size:12.5px;color:#888;display:block;margin-top:6px}
+.cart-empty{font-size:15px;color:#666;margin:16px 0}
+.sb-color{border:1px solid #d8d8dc;border-radius:8px;padding:7px 9px;font-size:14px;background:#fff;max-width:220px}
