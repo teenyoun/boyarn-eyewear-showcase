@@ -76,6 +76,17 @@
             "</span></li>";
         }).join("");
 
+        // 规格表移到主图所在左栏下方
+        var specEl = document.querySelector(".spec");
+        var galMain = document.querySelector(".gal-main");
+        if (specEl && galMain) {
+          var leftCol = galMain.parentNode;
+          var thumbs = document.querySelector(".gal-thumbs");
+          if (thumbs && thumbs.parentNode === leftCol) leftCol.insertBefore(specEl, thumbs.nextSibling);
+          else leftCol.appendChild(specEl);
+          specEl.classList.add("spec-under-gal");
+        }
+
         // 原色卡区整体隐藏（颜色改到价格下方的列表里）
         var oldBlock = document.querySelector(".colours");
         if (oldBlock) oldBlock.style.display = "none";
@@ -86,7 +97,7 @@
           '<p class="eyebrow">Select colour and quantity</p>' +
           '<ul class="sku-list">' + listHtml + "</ul>" +
           '<p class="colours-note">Photographed swatches from this style. Samples are charged at the ' +
-          "top-tier price shown above; freight is by total weight.</p>";
+          "top-tier price shown above. Shipping is billed at 0.1 kg per pair (0.15 kg per case): first 100 g US$18, then US$2.50 per extra 100 g.</p>";
         // 放在价格块正下方（阿里巴巴的位置），而不是页面底部
         var priceEl = document.querySelector(".price");
         if (priceEl && priceEl.parentNode) {
@@ -101,6 +112,7 @@
         bar.innerHTML = '<span class="sku-sub-wrap">Subtotal <b class="sku-sub">' +
           "$0.00</b><span class=\"sku-qty-n\"></span></span>" +
           '<span class="sku-btns">' +
+          '<a class="sku-gocart" href="' + BoyarnCart.base() + 'cart.html" hidden>Checkout <b class="sku-cn">0</b></a>' +
           '<button type="button" class="sku-add" disabled>Add to cart</button>' +
           '<button type="button" class="sku-buy" disabled>Buy now</button>' +
           "</span>";
@@ -355,14 +367,11 @@ var BoyarnCart = (function () {
     paint();
   }
 
-  // 与 Worker 的 SHIP_BANDS 保持一致：按总克重分档
+  // 与 Worker 一致：首重 100g / 18 美元，续重每 100g / 2.5 美元
   function shipCents(grams) {
     if (grams <= 0) return 0;
-    if (grams <= 250) return 2500;
-    if (grams <= 500) return 3000;
-    if (grams <= 1000) return 3800;
-    if (grams <= 2000) return 5200;
-    return 5200 + Math.ceil((grams - 2000) / 500) * 800;
+    var steps = Math.ceil(Math.max(0, grams - 100) / 100);
+    return 1800 + steps * 250;
   }
 
   function basePath() {
@@ -379,6 +388,11 @@ var BoyarnCart = (function () {
       return;
     }
     var n = count();
+    var go = document.querySelector(".sku-gocart");
+    if (go) {
+      if (n > 0) { go.hidden = false; go.querySelector(".sku-cn").textContent = n; }
+      else { go.hidden = true; }
+    }
     var pill = document.getElementById("cartPill");
     if (!pill) {
       if (!n) return;

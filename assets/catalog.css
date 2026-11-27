@@ -525,3 +525,17 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
   .sku-sub-wrap{width:100%}
   .sku-bar{flex-wrap:wrap;gap:8px}
 }
+
+/* ---------- Checkout 入口 + 规格表位置 ---------- */
+.sku-gocart{display:inline-flex;align-items:center;gap:6px;border:1px solid #111;border-radius:999px;
+  padding:11px 18px;font-size:14px;text-decoration:none;color:#111;background:#fff;white-space:nowrap}
+.sku-gocart b{background:#111;color:#fff;border-radius:999px;padding:1px 8px;font-size:12.5px}
+.sku-gocart[hidden]{display:none}
+.spec-under-gal{margin:22px 0 0;clear:both}
+@media (max-width:900px){
+  .spec-under-gal{margin-top:18px}
+}
+@media (max-width:640px){
+  .sku-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .sku-gocart{grid-column:1/-1;justify-content:center}
+}
