@@ -63,7 +63,7 @@
           var nm = sw.length ? (b.getAttribute("data-name") || ("Colour " + (n + 1))) : "As shown";
           var big = sw.length ? (b.getAttribute("data-large") || "") : "";
           var idx = sw.length ? n : -1;
-          var img = big ? '<img src="' + big + '" alt="" width="44" height="44" loading="lazy">'
+          var img = big ? '<img src="' + big + '" alt="" width="44" height="44" loading="' + (n < 6 ? "eager" : "lazy") + '">'
                         : '<span class="sku-ph"></span>';
           return '<li class="sku-row" data-i="' + idx + '" data-name="' + nm.replace(/"/g, "") + '">' +
             img +
@@ -310,6 +310,11 @@ var BoyarnCart = (function () {
 
   /* 浮动入口 */
   function paint() {
+    if (document.getElementById("cart-root")) {   // 购物车页本身已有明细，不显示浮标
+      var old = document.getElementById("cartPill");
+      if (old) old.style.display = "none";
+      return;
+    }
     var n = count();
     var pill = document.getElementById("cartPill");
     if (!pill) {
