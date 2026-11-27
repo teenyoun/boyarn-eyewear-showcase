@@ -97,7 +97,7 @@
           '<p class="eyebrow">Select colour and quantity</p>' +
           '<ul class="sku-list">' + listHtml + "</ul>" +
           '<p class="colours-note">Photographed swatches from this style. Samples are charged at the ' +
-          "top-tier price shown above. Shipping is billed at 0.1 kg per pair (0.15 kg per case): first 100 g US$18, then US$2.50 per extra 100 g.</p>";
+          "top-tier price shown above. Freight is calculated at checkout by order size.</p>";
         // 放在价格块正下方（阿里巴巴的位置），而不是页面底部
         var priceEl = document.querySelector(".price");
         if (priceEl && priceEl.parentNode) {
@@ -454,8 +454,7 @@ function renderCart(root) {
         "<p>Items <b>" + totalQty + "</b> pcs</p>" +
         "<p>Samples <b>$" + (subtotal / 100).toFixed(2) + "</b></p>" +
         "<p>Courier freight <b>$" + (ship / 100).toFixed(2) + "</b> " +
-        '<span class="cart-note">(by total weight ' +
-        (totalG >= 1000 ? (totalG / 1000).toFixed(2) + " kg" : totalG + " g") + ")</span></p>" +
+        '<span class="cart-note">(by order size)</span></p>' +
         "<p class=\"cart-total\">Total <b>$" + (grand / 100).toFixed(2) + "</b></p>" +
         '<button class="cart-pay" type="button">Pay by card</button>' +
         '<p class="cart-note">Import duty or VAT charged in your country is not included.</p>' +
