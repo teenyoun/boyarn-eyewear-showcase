@@ -394,3 +394,48 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
 .pdp-copy h2{font-size:26px;margin:6px 0 18px}
 .pdp-copy p{font-size:16px;line-height:1.75;color:#3c3c40;margin:0 0 16px}
 @media(max-width:640px){.pdp-copy h2{font-size:21px}.pdp-copy p{font-size:15px;line-height:1.7}}
+
+/* ---------- 产品页互动：点赞 + 买家评价 ---------- */
+.eng{max-width:760px;margin:8px 0 4px}
+.eng-like{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+.like-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid #d8d8dc;background:#fff;
+  border-radius:999px;padding:7px 14px;font-size:14px;line-height:1;cursor:pointer;color:#222;
+  transition:.15s border-color,.15s color,.15s background}
+.like-btn:hover{border-color:#b9b9c0}
+.like-btn.on{border-color:#c2185b;color:#c2185b;background:#fff5f8;cursor:default}
+.like-btn .like-n{font-weight:600}
+.like-note{font-size:13px;color:#777}
+.eng-rev{margin:34px 0 0;border-top:1px solid #e6e6ea;padding-top:26px}
+.eng-rev h2{font-size:20px;margin:0 0 8px}
+.rev-sum{color:#555;font-size:14px;margin-bottom:14px}
+.rev-sum b{font-size:17px;color:#111;margin-right:4px}
+.rev-sum span{color:#888;margin-left:4px}
+.rev-st{color:#e0a100;letter-spacing:1px;margin-right:8px}
+.rev-item{border-bottom:1px solid #f0f0f3;padding:12px 0}
+.rev-item:last-child{border-bottom:0}
+.rev-h{display:flex;align-items:center;gap:8px;font-size:13px;color:#666}
+.rev-h b{color:#111;font-size:14px}
+.rev-c{color:#888}
+.rev-h time{margin-left:auto;color:#aaa}
+.rev-item p{margin:6px 0 0;font-size:14.5px;line-height:1.65;color:#333}
+.rev-form{margin-top:18px;border:1px solid #e6e6ea;border-radius:12px;overflow:hidden}
+.rev-form summary{cursor:pointer;padding:13px 16px;font-weight:600;font-size:15px;background:#fafafa;list-style:none}
+.rev-form summary::-webkit-details-marker{display:none}
+.rev-form summary:after{content:"+";float:right;color:#999}
+.rev-form[open] summary:after{content:"–"}
+.rev-form form{padding:16px;display:grid;gap:12px}
+.rev-form .row{display:flex;gap:10px;flex-wrap:wrap}
+.rev-form label{font-size:13px;color:#555;display:block;margin-bottom:4px}
+.rev-form input,.rev-form textarea{width:100%;border:1px solid #d8d8dc;border-radius:8px;padding:9px 11px;
+  font-size:14px;font-family:inherit;background:#fff}
+.rev-form textarea{min-height:110px;resize:vertical}
+.rev-form .rate{display:flex;gap:6px;direction:rtl;justify-content:flex-end;width:max-content}
+.rev-form .rate input{display:none}
+.rev-form .rate label{font-size:26px;color:#d8d8dc;cursor:pointer;margin:0;line-height:1}
+.rev-form .rate input:checked ~ label,.rev-form .rate label:hover,.rev-form .rate label:hover ~ label{color:#e0a100}
+.rev-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.rev-form button{border:0;border-radius:9px;background:#111;color:#fff;padding:11px 18px;font-size:14px;cursor:pointer;width:max-content}
+.rev-form button:hover{background:#000}
+.rev-note{font-size:13px;color:#777;margin:0}
+.rev-note.ok{color:#137333}
+.rev-note.err{color:#a50e0e}
