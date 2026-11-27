@@ -76,8 +76,9 @@
             "</span></li>";
         }).join("");
 
-        var old = document.querySelector(".swatches-photo");
-        if (old && old.parentNode) old.parentNode.style.display = "none";
+        // 原色卡区整体隐藏（颜色改到价格下方的列表里）
+        var oldBlock = document.querySelector(".colours");
+        if (oldBlock) oldBlock.style.display = "none";
 
         var panel = document.createElement("div");
         panel.className = "sku-panel";
@@ -86,14 +87,23 @@
           '<ul class="sku-list">' + listHtml + "</ul>" +
           '<p class="colours-note">Photographed swatches from this style. Samples are charged at the ' +
           "top-tier price shown above; freight is by total weight.</p>";
-        sb.parentNode.insertBefore(panel, sb);
+        // 放在价格块正下方（阿里巴巴的位置），而不是页面底部
+        var priceEl = document.querySelector(".price");
+        if (priceEl && priceEl.parentNode) {
+          priceEl.parentNode.insertBefore(panel, priceEl.nextSibling);
+        } else {
+          sb.parentNode.insertBefore(panel, sb);
+        }
         sb.style.display = "none";
 
         var bar = document.createElement("div");
         bar.className = "sku-bar";
         bar.innerHTML = '<span class="sku-sub-wrap">Subtotal <b class="sku-sub">' +
           "$0.00</b><span class=\"sku-qty-n\"></span></span>" +
-          '<button type="button" class="sku-add" disabled>Add to sample cart</button>';
+          '<span class="sku-btns">' +
+          '<button type="button" class="sku-add" disabled>Add to cart</button>' +
+          '<button type="button" class="sku-buy" disabled>Buy now</button>' +
+          "</span>";
         document.body.appendChild(bar);
 
         var subEl = bar.querySelector(".sku-sub");
@@ -110,9 +120,27 @@
           subEl.textContent = "$" + ((unit * qn) / 100).toFixed(2);
           qtyEl.textContent = qn ? " \u00b7 " + qn + " pc" + (qn > 1 ? "s" : "") : "";
           addBtn.disabled = qn === 0;
+          var bb = bar.querySelector(".sku-buy");
+          if (bb) bb.disabled = qn === 0;
         }
 
+        // 点缩略图或颜色名 -> 主图切换成该颜色的大图
+        function showMain(src) {
+          if (!src) return;
+          var vid = document.getElementById("galVid");
+          var img = document.getElementById("galImg");
+          if (vid) { try { vid.pause(); } catch (e) {} vid.hidden = true; }
+          if (img) { img.hidden = false; img.src = src; }
+          var main = document.querySelector(".gal-main");
+          if (main) main.classList.add("show-img");
+        }
         panel.querySelectorAll(".sku-row").forEach(function (li) {
+          var big = sw.length ? rows[parseInt(li.getAttribute("data-i"), 10)].getAttribute("data-large") : "";
+          [li.querySelector("img"), li.querySelector(".sku-nm")].forEach(function (t) {
+            if (!t) return;
+            t.style.cursor = "pointer";
+            t.addEventListener("click", function () { showMain(big); });
+          });
           var inp = li.querySelector(".q-i");
           li.querySelector(".q-p").addEventListener("click", function () {
             inp.value = Math.min(5, (parseInt(inp.value, 10) || 0) + 1);
@@ -125,18 +153,53 @@
           inp.addEventListener("input", recalc);
         });
 
-        addBtn.addEventListener("click", function () {
-          var added = 0;
+        function picked() {
+          var out = [];
           panel.querySelectorAll(".sku-row").forEach(function (li) {
             var q = parseInt(li.querySelector(".q-i").value, 10) || 0;
             if (q <= 0) return;
-            BoyarnCart.add({
+            out.push({
               ref: ref,
               i: parseInt(li.getAttribute("data-i"), 10),
               c: li.getAttribute("data-name"),
               qty: Math.min(5, q)
             });
-            added += Math.min(5, q);
+          });
+          return out;
+        }
+
+        var buyBtn = bar.querySelector(".sku-buy");
+        buyBtn.addEventListener("click", function () {
+          var items = picked();
+          if (!items.length) return;
+          buyBtn.disabled = true;
+          buyBtn.textContent = "Opening Stripe...";
+          fetch(API + "/api/cart-checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: items })
+          })
+            .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+            .then(function (res) {
+              if (res.ok && res.d.url) { location.href = res.d.url; return; }
+              buyBtn.disabled = false;
+              buyBtn.textContent = "Buy now";
+              alert(res.d.error === "payments not configured"
+                ? "Card payment is not switched on yet. Please message us on WhatsApp."
+                : "Payment could not start: " + (res.d.error || "unknown error"));
+            })
+            .catch(function () {
+              buyBtn.disabled = false;
+              buyBtn.textContent = "Buy now";
+              alert("Network error, please retry.");
+            });
+        });
+
+        addBtn.addEventListener("click", function () {
+          var added = 0;
+          picked().forEach(function (it) {
+            BoyarnCart.add(it);
+            added += it.qty;
           });
           if (added) {
             addBtn.textContent = "Added " + added + " \u2713";
