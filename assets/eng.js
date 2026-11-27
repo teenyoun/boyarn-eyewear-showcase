@@ -69,10 +69,12 @@
           var n = parseInt(qty.value, 10) || 1;
           var idx = parseInt(sel.value, 10);
           var cname = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : "";
+          var feeNode = sb.querySelector(".sb-fee");
+          var feeTxt = feeNode ? feeNode.textContent : "";
           BoyarnCart.add({ ref: ref, i: idx, c: cname, qty: n });
           btn.textContent = "Added \u2713";
           setTimeout(function () {
-            btn.innerHTML = 'Add to sample cart \u00b7 <b class="sb-fee">' + sb.querySelector(".sb-fee").textContent + "</b> each";
+            btn.innerHTML = 'Add to sample cart \u00b7 <b class="sb-fee">' + feeTxt + "</b> each";
           }, 1400);
         });
       })
@@ -333,8 +335,7 @@ function renderCart(root) {
           .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
           .then(function (res) {
             if (res.ok && res.d.url) {
-              localStorage.removeItem(BoyarnCart.KEY);
-              location.href = res.d.url;
+              location.href = res.d.url;   // 购物车在 thanks.html 才清空，放弃支付可返回重试
               return;
             }
             btn.disabled = false;
