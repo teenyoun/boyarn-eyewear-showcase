@@ -80,9 +80,11 @@
   apply();
 
   /* preload the rest so the next swipe is instant */
-  thumbs.slice(1).forEach(function (b) {
+  buttons.slice(1).forEach(function (b) {
+    var el = b.querySelector("img");
+    if (!el) return;
     var im = new Image();
-    im.src = b.querySelector("img").getAttribute("src").replace("/assets/t/", "/assets/p/");
+    im.src = el.getAttribute("src").replace("/assets/t/", "/assets/p/");
   });
 })();
 
