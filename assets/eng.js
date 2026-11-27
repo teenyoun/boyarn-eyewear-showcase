@@ -117,6 +117,7 @@
           '<button type="button" class="sku-buy" disabled>Buy now</button>' +
           "</span>";
         document.body.appendChild(bar);
+        document.body.classList.add("has-sku-bar");
 
         var subEl = bar.querySelector(".sku-sub");
         var qtyEl = bar.querySelector(".sku-qty-n");
