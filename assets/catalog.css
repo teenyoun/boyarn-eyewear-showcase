@@ -480,3 +480,34 @@ select.sort{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(
 .cart-note{font-size:12.5px;color:#888;display:block;margin-top:6px}
 .cart-empty{font-size:15px;color:#666;margin:16px 0}
 .sb-color{border:1px solid #d8d8dc;border-radius:8px;padding:7px 9px;font-size:14px;background:#fff;max-width:220px}
+
+/* ---------- 阿里巴巴式选色面板 ---------- */
+.sku-panel{border:1px solid #e6e6ea;border-radius:14px;padding:16px 18px;margin:16px 0 90px;background:#fff}
+.sku-panel .eyebrow{margin:0 0 12px}
+.sku-list{list-style:none;margin:0;padding:0}
+.sku-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f2f2f5}
+.sku-row:last-child{border-bottom:0}
+.sku-row img,.sku-ph{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid #ececf0;flex:0 0 auto;background:#f6f6f8}
+.sku-nm{flex:1 1 auto;font-size:14.5px;color:#222;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sku-pr{font-size:14.5px;font-weight:600;color:#111;min-width:64px;text-align:right}
+.sku-step{display:inline-flex;align-items:center;gap:0;border:1px solid #e2e2e6;border-radius:999px;overflow:hidden;background:#fff;flex:0 0 auto}
+.sku-step button{width:32px;height:32px;border:0;background:#fff;font-size:16px;line-height:1;cursor:pointer;color:#333}
+.sku-step button:hover{background:#f3f3f6}
+.sku-step input{width:44px;border:0;text-align:center;font-size:14px;-moz-appearance:textfield}
+.sku-step input::-webkit-outer-spin-button,.sku-step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.sku-bar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:12px 18px;background:#fff;border-top:1px solid #e6e6ea;
+  box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+@supports (padding:max(0px)){.sku-bar{padding-bottom:max(12px,env(safe-area-inset-bottom))}}
+.sku-sub-wrap{font-size:14px;color:#555}
+.sku-sub-wrap b{font-size:19px;color:#111;margin-left:6px}
+.sku-qty-n{color:#888}
+.sku-add{border:0;border-radius:999px;background:#111;color:#fff;padding:13px 26px;font-size:15px;cursor:pointer}
+.sku-add:hover{background:#000}
+.sku-add:disabled{opacity:.4;cursor:default}
+@media (max-width:640px){
+  .sku-row{flex-wrap:wrap}
+  .sku-nm{flex:1 1 100%;order:2}
+  .sku-bar{padding:10px 12px}
+  .sku-add{padding:11px 18px;font-size:14px}
+}

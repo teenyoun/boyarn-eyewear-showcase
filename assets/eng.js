@@ -40,7 +40,7 @@
   }
 
 
-  /* ---------------- 样品车：加入 ---------------- */
+  /* ---------------- 样品车：阿里巴巴式选色面板 ---------------- */
   var sb = document.querySelector("[data-sample]");
   if (sb) {
     var ref = sb.getAttribute("data-sample");
@@ -48,35 +48,107 @@
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
         if (!cfg.payments) return;
-        var btn = sb.querySelector(".sb-btn");
-        var sel = sb.querySelector(".sb-color");
-        var qty = sb.querySelector(".sb-qty");
 
-        // 颜色下拉：从页面已有的实拍色卡按钮读取，索引与服务端 skus.js 一致
-        var sw = [].slice.call(document.querySelectorAll(".sw-btn"));
-        if (sw.length) {
-          sel.innerHTML = sw.map(function (b, n) {
-            var nm = b.getAttribute("data-name") || ("Colour " + (n + 1));
-            return '<option value="' + n + '">' + nm.replace(/[<>&]/g, "") + "</option>";
-          }).join("");
-        } else {
-          sel.innerHTML = '<option value="-1">As shown</option>';
+        var feeNode = sb.querySelector(".sb-fee");
+        var unitTxt = feeNode ? feeNode.textContent : "$0.00";
+        var unit = Math.round(parseFloat(unitTxt.replace(/[^0-9.]/g, "")) * 100) || 0;
+
+        // 从页面已有的实拍色卡按钮生成颜色行，索引与服务端 skus.js 一致
+        var sw = [].slice.call(document.querySelectorAll(".swatches-photo .sw-btn"));
+        var rows = sw.length
+          ? sw
+          : [{ getAttribute: function () { return ""; } }];   // 占位：无色卡
+
+        var listHtml = rows.map(function (b, n) {
+          var nm = sw.length ? (b.getAttribute("data-name") || ("Colour " + (n + 1))) : "As shown";
+          var big = sw.length ? (b.getAttribute("data-large") || "") : "";
+          var idx = sw.length ? n : -1;
+          var img = big ? '<img src="' + big + '" alt="" width="44" height="44" loading="lazy">'
+                        : '<span class="sku-ph"></span>';
+          return '<li class="sku-row" data-i="' + idx + '" data-name="' + nm.replace(/"/g, "") + '">' +
+            img +
+            '<span class="sku-nm">' + nm + "</span>" +
+            '<span class="sku-pr">' + unitTxt + "</span>" +
+            '<span class="sku-step">' +
+            '<button type="button" class="q-m" aria-label="Less">\u2212</button>' +
+            '<input class="q-i" type="number" min="0" max="5" value="0" inputmode="numeric" aria-label="Quantity">' +
+            '<button type="button" class="q-p" aria-label="More">+</button>' +
+            "</span></li>";
+        }).join("");
+
+        var old = document.querySelector(".swatches-photo");
+        if (old && old.parentNode) old.parentNode.style.display = "none";
+
+        var panel = document.createElement("div");
+        panel.className = "sku-panel";
+        panel.innerHTML =
+          '<p class="eyebrow">Select colour and quantity</p>' +
+          '<ul class="sku-list">' + listHtml + "</ul>" +
+          '<p class="colours-note">Photographed swatches from this style. Samples are charged at the ' +
+          "top-tier price shown above; freight is by total weight.</p>";
+        sb.parentNode.insertBefore(panel, sb);
+        sb.style.display = "none";
+
+        var bar = document.createElement("div");
+        bar.className = "sku-bar";
+        bar.innerHTML = '<span class="sku-sub-wrap">Subtotal <b class="sku-sub">' +
+          "$0.00</b><span class=\"sku-qty-n\"></span></span>" +
+          '<button type="button" class="sku-add" disabled>Add to sample cart</button>';
+        document.body.appendChild(bar);
+
+        var subEl = bar.querySelector(".sku-sub");
+        var qtyEl = bar.querySelector(".sku-qty-n");
+        var addBtn = bar.querySelector(".sku-add");
+
+        function recalc() {
+          var qn = 0;
+          [].slice.call(panel.querySelectorAll(".sku-i, .q-i")).forEach(function () {});
+          [].slice.call(panel.querySelectorAll(".sku-row")).forEach(function (li) {
+            var q = parseInt(li.querySelector(".q-i").value, 10) || 0;
+            qn += Math.max(0, Math.min(5, q));
+          });
+          subEl.textContent = "$" + ((unit * qn) / 100).toFixed(2);
+          qtyEl.textContent = qn ? " \u00b7 " + qn + " pc" + (qn > 1 ? "s" : "") : "";
+          addBtn.disabled = qn === 0;
         }
 
-        sb.hidden = false;
-        btn.disabled = false;
-        btn.addEventListener("click", function () {
-          var n = parseInt(qty.value, 10) || 1;
-          var idx = parseInt(sel.value, 10);
-          var cname = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : "";
-          var feeNode = sb.querySelector(".sb-fee");
-          var feeTxt = feeNode ? feeNode.textContent : "";
-          BoyarnCart.add({ ref: ref, i: idx, c: cname, qty: n });
-          btn.textContent = "Added \u2713";
-          setTimeout(function () {
-            btn.innerHTML = 'Add to sample cart \u00b7 <b class="sb-fee">' + feeTxt + "</b> each";
-          }, 1400);
+        panel.querySelectorAll(".sku-row").forEach(function (li) {
+          var inp = li.querySelector(".q-i");
+          li.querySelector(".q-p").addEventListener("click", function () {
+            inp.value = Math.min(5, (parseInt(inp.value, 10) || 0) + 1);
+            recalc();
+          });
+          li.querySelector(".q-m").addEventListener("click", function () {
+            inp.value = Math.max(0, (parseInt(inp.value, 10) || 0) - 1);
+            recalc();
+          });
+          inp.addEventListener("input", recalc);
         });
+
+        addBtn.addEventListener("click", function () {
+          var added = 0;
+          panel.querySelectorAll(".sku-row").forEach(function (li) {
+            var q = parseInt(li.querySelector(".q-i").value, 10) || 0;
+            if (q <= 0) return;
+            BoyarnCart.add({
+              ref: ref,
+              i: parseInt(li.getAttribute("data-i"), 10),
+              c: li.getAttribute("data-name"),
+              qty: Math.min(5, q)
+            });
+            added += Math.min(5, q);
+          });
+          if (added) {
+            addBtn.textContent = "Added " + added + " \u2713";
+            setTimeout(function () {
+              panel.querySelectorAll(".q-i").forEach(function (x) { x.value = 0; });
+              recalc();
+              addBtn.textContent = "Add to sample cart";
+            }, 1200);
+          }
+        });
+
+        recalc();
       })
       .catch(function () {});
   }
@@ -220,12 +292,14 @@ var BoyarnCart = (function () {
     paint();
   }
 
-  function shipCents(n) {
-    if (n <= 0) return 0;
-    if (n <= 2) return 2500;
-    if (n <= 5) return 3800;
-    if (n <= 10) return 5500;
-    return 5500 + (n - 10) * 600;
+  // 与 Worker 的 SHIP_BANDS 保持一致：按总克重分档
+  function shipCents(grams) {
+    if (grams <= 0) return 0;
+    if (grams <= 250) return 2500;
+    if (grams <= 500) return 3000;
+    if (grams <= 1000) return 3800;
+    if (grams <= 2000) return 5200;
+    return 5200 + Math.ceil((grams - 2000) / 500) * 800;
   }
 
   function basePath() {
@@ -271,14 +345,15 @@ function renderCart(root) {
       '<a href="' + BoyarnCart.base() + 'sunglasses.html">Browse the catalogue</a>.</p>';
     return;
   }
-  fetch(BoyarnCart.base() + "assets/prices.json")
+  fetch(BoyarnCart.base() + "assets/items.json")
     .then(function (r) { return r.json(); })
     .then(function (px) {
-      var subtotal = 0, totalQty = 0;
+      var subtotal = 0, totalQty = 0, totalG = 0;
       var rows = items.map(function (it) {
-        var unit = px[it.ref] || 0;
+        var meta = px[it.ref] || { p: 0, g: 60 };
+        var unit = meta.p || 0;
         var q = parseInt(it.qty, 10) || 1;
-        subtotal += unit * q; totalQty += q;
+        subtotal += unit * q; totalQty += q; totalG += (meta.g || 60) * q;
         return '<tr data-ref="' + it.ref + '" data-i="' + it.i + '">' +
           '<td><a href="' + BoyarnCart.base() + 'product/' + it.ref + '.html">' + it.ref + "</a></td>" +
           "<td>" + (it.c || "As shown") + "</td>" +
@@ -291,7 +366,7 @@ function renderCart(root) {
           '<td><button class="c-del" type="button">Remove</button></td></tr>';
       }).join("");
 
-      var ship = BoyarnCart.shipCents(totalQty);
+      var ship = BoyarnCart.shipCents(totalG);
       var grand = subtotal + ship;
       root.innerHTML =
         '<table class="cart-table"><thead><tr><th>Style</th><th>Colour</th><th>Qty</th>' +
@@ -300,7 +375,8 @@ function renderCart(root) {
         "<p>Items <b>" + totalQty + "</b> pcs</p>" +
         "<p>Samples <b>$" + (subtotal / 100).toFixed(2) + "</b></p>" +
         "<p>Courier freight <b>$" + (ship / 100).toFixed(2) + "</b> " +
-        '<span class="cart-note">(by total piece count)</span></p>' +
+        '<span class="cart-note">(by total weight ' +
+        (totalG >= 1000 ? (totalG / 1000).toFixed(2) + " kg" : totalG + " g") + ")</span></p>" +
         "<p class=\"cart-total\">Total <b>$" + (grand / 100).toFixed(2) + "</b></p>" +
         '<button class="cart-pay" type="button">Pay by card</button>' +
         '<p class="cart-note">Import duty or VAT charged in your country is not included.</p>' +
